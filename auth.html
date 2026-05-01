@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Authentication - Team Task Manager</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#0c1b34",
+                        "on-primary-container": "#aebddd",
+                        "inverse-on-surface": "#ebf1ff",
+                        "on-background": "#151c27",
+                        "primary-container": "#3e4c67",
+                        "on-tertiary-fixed-variant": "#59431d",
+                        "inverse-primary": "#b8c7e7",
+                        "primary-fixed": "#d7e3ff",
+                        "on-secondary-fixed": "#191c1d",
+                        "tertiary-fixed-dim": "#e1c290",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#44474d",
+                        "surface": "#f9f9ff",
+                        "surface-container-highest": "#dce2f3",
+                        "surface-container": "#e7eefe",
+                        "error-container": "#ffdad6",
+                        "inverse-surface": "#2a313d",
+                        "outline-variant": "#c5c6ce",
+                        "on-secondary-fixed-variant": "#454748",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#27354f",
+                        "surface-variant": "#dce2f3",
+                        "surface-bright": "#f9f9ff",
+                        "secondary-fixed": "#e1e3e4",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#45320c",
+                        "on-primary-fixed-variant": "#394762",
+                        "secondary-container": "#e1e3e4",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#ffdeaa",
+                        "surface-dim": "#d3daea",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#271900",
+                        "on-surface": "#151c27",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#5e4821",
+                        "surface-container-high": "#e2e8f8",
+                        "on-secondary-container": "#626566",
+                        "outline": "#75777e",
+                        "secondary": "#5c5f60",
+                        "on-tertiary-container": "#d6b887",
+                        "background": "#f9f9ff",
+                        "surface-tint": "#515f7a",
+                        "secondary-fixed-dim": "#c5c7c8",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#f0f3ff",
+                        "primary-fixed-dim": "#b8c7e7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "24px",
+                        "sidebar-collapsed": "64px",
+                        "unit": "4px",
+                        "sidebar-width": "240px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-base": ["Inter", "sans-serif"],
+                        "h2": ["Inter", "sans-serif"],
+                        "h1": ["Inter", "sans-serif"],
+                        "h3": ["Inter", "sans-serif"],
+                        "body-sm": ["Inter", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                        "code": ["monospace"]
+                    },
+                    "fontSize": {
+                        "body-base": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                        "h2": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "h1": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "h3": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-sm": ["13px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "code": ["13px", { "lineHeight": "18px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex items-center justify-center p-container-padding font-body-base text-on-background antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Container for Side-by-Side Demonstration of States -->
+<div class="w-full max-w-6xl flex flex-col lg:flex-row gap-12 items-start justify-center">
+<!-- Login Card (Clean State) -->
+<div class="w-full max-w-md bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_1px_3px_0_rgba(0,0,0,0.05),_0_1px_2px_0_rgba(0,0,0,0.03)] p-8">
+<!-- Brand / Logo -->
+<div class="flex items-center justify-center mb-8 gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1; font-size: 28px;">task_alt</span>
+<span class="font-h2 text-h2 text-on-surface">TaskFlow</span>
+</div>
+<!-- Header -->
+<div class="text-center mb-8">
+<h1 class="font-h1 text-h1 text-on-surface mb-2">Welcome back</h1>
+<p class="font-body-base text-body-base text-on-surface-variant">Log in to your account to continue.</p>
+</div>
+<!-- Form -->
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<!-- Email Field -->
+<div class="space-y-1.5">
+<label class="block font-label-caps text-label-caps text-on-surface-variant" for="login-email">Email Address</label>
+<input class="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface font-body-base text-body-base placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow" id="login-email" placeholder="name@company.com" type="email"/>
+</div>
+<!-- Password Field -->
+<div class="space-y-1.5">
+<div class="flex items-center justify-between">
+<label class="block font-label-caps text-label-caps text-on-surface-variant" for="login-password">Password</label>
+<a class="font-body-sm text-body-sm text-primary hover:text-surface-tint hover:underline transition-colors" href="#">Forgot password?</a>
+</div>
+<input class="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface font-body-base text-body-base placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow" id="login-password" placeholder="••••••••" type="password"/>
+</div>
+<!-- Submit Button -->
+<button class="w-full mt-2 py-2.5 bg-primary text-on-primary font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:bg-surface-tint active:scale-[0.98] transition-all" type="submit">
+                    Log in
+                    <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+</button>
+</form>
+<!-- Footer -->
+<div class="mt-8 text-center">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Don't have an account? <a class="text-primary font-h3 text-body-sm hover:underline hover:text-surface-tint transition-colors" href="#">Sign up</a>
+</p>
+</div>
+</div>
+<!-- Signup Card (Error State Demonstration) -->
+<div class="w-full max-w-md bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_1px_3px_0_rgba(0,0,0,0.05),_0_1px_2px_0_rgba(0,0,0,0.03)] p-8">
+<!-- Brand / Logo -->
+<div class="flex items-center justify-center mb-8 gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1; font-size: 28px;">group_add</span>
+<span class="font-h2 text-h2 text-on-surface">TaskFlow</span>
+</div>
+<!-- Header -->
+<div class="text-center mb-8">
+<h1 class="font-h1 text-h1 text-on-surface mb-2">Create an account</h1>
+<p class="font-body-base text-body-base text-on-surface-variant">Start managing your team's tasks today.</p>
+</div>
+<!-- Form -->
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<!-- Full Name Field -->
+<div class="space-y-1.5">
+<label class="block font-label-caps text-label-caps text-on-surface-variant" for="signup-name">Full Name</label>
+<input class="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface font-body-base text-body-base placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow" id="signup-name" type="text" value="Jane Doe"/>
+</div>
+<!-- Email Field (ERROR STATE) -->
+<div class="space-y-1.5 relative">
+<label class="block font-label-caps text-label-caps text-error" for="signup-email">Email Address</label>
+<div class="relative">
+<input class="w-full px-3 py-2 pr-10 bg-error-container/10 border border-error rounded text-on-surface font-body-base text-body-base focus:outline-none focus:border-error focus:ring-1 focus:ring-error transition-shadow" id="signup-email" type="text" value="jane.doe@invalid"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1; font-size: 18px;">error</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-error flex items-center gap-1 mt-1">
+                        Please enter a valid email format.
+                    </p>
+</div>
+<!-- Password Field -->
+<div class="space-y-1.5">
+<label class="block font-label-caps text-label-caps text-on-surface-variant" for="signup-password">Password</label>
+<input class="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface font-body-base text-body-base placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow" id="signup-password" placeholder="Create a strong password" type="password"/>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 text-xs">Must be at least 8 characters long.</p>
+</div>
+<!-- Submit Button -->
+<button class="w-full mt-4 py-2.5 bg-primary text-on-primary font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:bg-surface-tint active:scale-[0.98] transition-all" type="submit">
+                    Create Account
+                </button>
+</form>
+<!-- Footer -->
+<div class="mt-8 text-center">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Already have an account? <a class="text-primary font-h3 text-body-sm hover:underline hover:text-surface-tint transition-colors" href="#">Log in</a>
+</p>
+</div>
+</div>
+</div>
+</body></html>
