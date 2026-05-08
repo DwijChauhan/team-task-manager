@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useLocalStorage } from "../../../../hooks/useLocalStorage";
 import Link from "next/link";
+import TaskCard from '@/components/TaskCard';
+import CreateTaskPanel from '@/components/CreateTaskPanel';
 
 // Mock Data
 type Task = {
@@ -127,6 +129,16 @@ export default function ProjectKanbanPage() {
 
   const selectedTask = tasks.find((t) => t.id === selectedTaskId);
 
+  const isAllDone = tasks.length > 0 && tasks.every((t) => t.status === "done");
+  const hasOverdueNotDone = tasks.some(
+    (t) => (t.dueDate === "Today" || t.dueDate.includes("Overdue")) && t.status !== "done"
+  );
+  const statusDotColor = hasOverdueNotDone
+    ? "#E24B4A"
+    : isAllDone
+    ? "#3B6D11"
+    : "#BA7517";
+
   if (!mounted) {
     return <div className="flex-1 overflow-x-hidden flex bg-background min-h-[calc(100vh-64px)] items-center justify-center">Loading board...</div>;
   }
@@ -140,12 +152,16 @@ export default function ProjectKanbanPage() {
           <div className="max-w-5xl mx-auto">
             <div className="flex items-start justify-between mb-4">
               <div>
+                <div className="text-[11px] uppercase tracking-[0.08em] text-[#9A9A9A] mb-1 font-medium">ADMIN WORKSPACE</div>
                 <div className="flex items-center gap-2 mb-2 text-outline text-body-sm">
                   <span className="material-symbols-outlined text-[16px]">folder</span>
                   <span>Projects / Q3 Festive Season</span>
                 </div>
-                <h1 className="font-h1 text-h1 text-on-surface mb-2">Diwali Festival Sale Campaign</h1>
-                <p className="font-body-base text-body-base text-on-surface-variant max-w-2xl">
+                <div className="flex items-center gap-3 mb-2">
+                  <h1 className="font-h1 text-h1 text-on-surface">Diwali Festival Sale Campaign</h1>
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: statusDotColor }}></span>
+                </div>
+                <p className="font-body-base text-body-base text-on-surface-variant max-w-2xl" style={{ overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', textOverflow: 'ellipsis' }}>
                   Complete marketing campaign for the Diwali sale focusing on massive discounts, special regional offers, and improved conversion funnels.
                 </p>
               </div>
@@ -205,6 +221,7 @@ export default function ProjectKanbanPage() {
                         isSelected={selectedTaskId === task.id}
                         onDragStart={(e) => handleDragStart(e, task.id)}
                         onClick={() => setSelectedTaskId(task.id)}
+                        isAdmin={true}
                       />
                     ))}
                 </div>
@@ -234,6 +251,7 @@ export default function ProjectKanbanPage() {
                         isSelected={selectedTaskId === task.id}
                         onDragStart={(e) => handleDragStart(e, task.id)}
                         onClick={() => setSelectedTaskId(task.id)}
+                        isAdmin={true}
                       />
                     ))}
                 </div>
@@ -263,6 +281,7 @@ export default function ProjectKanbanPage() {
                         isSelected={selectedTaskId === task.id}
                         onDragStart={(e) => handleDragStart(e, task.id)}
                         onClick={() => setSelectedTaskId(task.id)}
+                        isAdmin={true}
                       />
                     ))}
                 </div>
@@ -362,46 +381,3 @@ export default function ProjectKanbanPage() {
   );
 }
 
-// Subcomponent for Task Cards
-function TaskCard({ task, isSelected, onDragStart, onClick }: { task: Task, isSelected: boolean, onDragStart: React.DragEventHandler, onClick: () => void }) {
-  return (
-    <div
-      draggable
-      onDragStart={onDragStart}
-      onClick={onClick}
-      className={`bg-surface border-2 rounded-lg p-4 cursor-pointer transition-colors group relative ${
-        isSelected ? "border-primary ambient-shadow-level-3" : "border-outline-variant ambient-shadow-level-2 hover:border-primary/50"
-      }`}
-    >
-      {isSelected && <div className="absolute -left-[2px] top-4 bottom-4 w-1 bg-primary rounded-r"></div>}
-      <div className="flex justify-between items-start mb-2 pl-2">
-        <div className={`px-2 py-0.5 rounded font-label-caps text-label-caps ${
-          task.priority === 'High' ? 'bg-error-container text-on-error-container' :
-          task.priority === 'Medium' ? 'bg-tertiary-container/30 text-on-tertiary-container' :
-          'bg-surface-variant text-on-surface-variant'
-        }`}>
-          {task.priority}
-        </div>
-      </div>
-      <h4 className="font-body-base text-body-base font-semibold text-on-surface mb-2 leading-tight pl-2">
-        {task.title}
-      </h4>
-      <p className="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-4 pl-2">
-        {task.description}
-      </p>
-      <div className="flex items-center justify-between mt-auto pl-2">
-        <div className={`flex items-center gap-1 font-body-sm text-[12px] font-medium ${task.dueDate === 'Today' ? 'text-error' : 'text-outline'}`}>
-          <span className="material-symbols-outlined text-[14px]">calendar_today</span>
-          {task.dueDate}
-        </div>
-        {task.assignee.avatar ? (
-          <img alt="Assignee" className="w-6 h-6 rounded-full ring-2 ring-surface" src={task.assignee.avatar} />
-        ) : (
-          <div className="w-6 h-6 rounded-full border border-dashed border-outline flex items-center justify-center">
-            <span className="material-symbols-outlined text-[14px] text-outline">person</span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
