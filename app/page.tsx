@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -11,239 +10,265 @@ export default function Page() {
   // Login State
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [loginErrors, setLoginErrors] = useState<{email?: string, password?: string}>({});
   const [loginError, setLoginError] = useState("");
 
   // Signup State
   const [signupName, setSignupName] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
+  const [signupRole, setSignupRole] = useState("Member");
+  const [signupErrors, setSignupErrors] = useState<{name?: string, email?: string, password?: string}>({});
   const [signupError, setSignupError] = useState("");
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError("");
+    const errors: any = {};
     
-    if (!loginEmail || !loginPassword) {
-      setLoginError("Please enter both email and password.");
-      return;
-    }
+    if (!loginEmail) errors.email = "Email is required";
+    if (!loginPassword) errors.password = "Password is required";
+    
+    setLoginErrors(errors);
+
+    if (Object.keys(errors).length > 0) return;
     
     // Simulate successful login
+    // In a real app: await signIn('credentials', { email, password });
     router.push("/dashboard");
   };
 
   const handleSignupSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSignupError("");
+    const errors: any = {};
 
-    if (!signupName || !signupEmail || !signupPassword) {
-      setSignupError("Please fill out all fields.");
-      return;
+    if (!signupName) errors.name = "Full name is required";
+    if (!signupEmail) {
+      errors.email = "Email is required";
+    } else if (!signupEmail.includes("@")) {
+      errors.email = "Please enter a valid email format";
+    }
+    if (!signupPassword) {
+      errors.password = "Password is required";
+    } else if (signupPassword.length < 8) {
+      errors.password = "Password must be at least 8 characters long";
     }
 
-    if (!signupEmail.includes("@")) {
-      setSignupError("Please enter a valid email format.");
-      return;
-    }
+    setSignupErrors(errors);
 
-    if (signupPassword.length < 8) {
-      setSignupError("Password must be at least 8 characters long.");
-      return;
-    }
+    if (Object.keys(errors).length > 0) return;
 
-    // Simulate successful signup
+    // Simulate successful signup and saving role to Postgres
+    // In a real app: await fetch('/api/signup', { method: 'POST', body: JSON.stringify({ name, email, password, role }) });
     router.push("/dashboard");
   };
 
   return (
-    <div className="w-full flex items-center justify-center min-h-screen p-container-padding selection:bg-primary-fixed selection:text-on-primary-fixed bg-background">
+    <div className="w-full flex items-center justify-center min-h-screen p-container-padding selection:bg-primary selection:text-on-primary bg-background">
       <div className="w-full max-w-md">
         
-        {isLogin ? (
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_1px_3px_0_rgba(0,0,0,0.05),_0_1px_2px_0_rgba(0,0,0,0.03)] p-8">
-            <div className="flex items-center justify-center mb-8 gap-2">
-              <span
-                className="material-symbols-outlined text-primary"
-                style={{ fontVariationSettings: "'FILL' 1", fontSize: "28px" }}
-              >
-                task_alt
-              </span>
-              <span className="font-h2 text-h2 text-on-surface">TaskFlow</span>
-            </div>
-            
-            <div className="text-center mb-8">
-              <h1 className="font-h1 text-h1 text-on-surface mb-2">Welcome back</h1>
-              <p className="font-body-base text-body-base text-on-surface-variant">
-                Log in to your account to continue.
-              </p>
-            </div>
-            
-            <form className="space-y-5" onSubmit={handleLoginSubmit}>
-              <div className="space-y-1.5">
-                <label className="block font-label-caps text-label-caps text-on-surface-variant" htmlFor="login-email">
-                  Email Address
-                </label>
-                <input
-                  className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface font-body-base text-body-base placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow"
-                  id="login-email"
-                  placeholder="name@company.com"
-                  type="email"
-                  value={loginEmail}
-                  onChange={(e) => setLoginEmail(e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <label className="block font-label-caps text-label-caps text-on-surface-variant" htmlFor="login-password">
-                    Password
-                  </label>
-                  <button type="button" className="font-body-sm text-body-sm text-primary hover:text-surface-tint hover:underline transition-colors">
-                    Forgot password?
-                  </button>
-                </div>
-                <input
-                  className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface font-body-base text-body-base placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow"
-                  id="login-password"
-                  placeholder="••••••••"
-                  type="password"
-                  value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
-                />
-              </div>
-
-              {loginError && (
-                <p className="font-body-sm text-body-sm text-error flex items-center gap-1 mt-1">
-                  <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>error</span>
-                  {loginError}
-                </p>
-              )}
-              
-              <button type="submit" className="w-full mt-2 py-2.5 bg-primary text-on-primary font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:bg-surface-tint active:scale-[0.98] transition-all">
-                  Log in
-                  <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>
-                    arrow_forward
-                  </span>
-              </button>
-            </form>
-            
-            <div className="mt-8 text-center">
-              <p className="font-body-sm text-body-sm text-on-surface-variant">
-                Don't have an account?{" "}
-                <button
-                  type="button"
-                  onClick={() => setIsLogin(false)}
-                  className="text-primary font-h3 text-body-sm hover:underline hover:text-surface-tint transition-colors"
-                >
-                  Sign up
-                </button>
-              </p>
-            </div>
+        <div className="bg-surface-container-lowest border border-outline-variant rounded-[12px] shadow-sm overflow-hidden">
+          
+          {/* Tab Switcher */}
+          <div className="flex border-b border-outline-variant p-2 gap-2 bg-surface">
+            <button 
+              onClick={() => setIsLogin(true)}
+              className={`flex-1 py-2 text-center text-[14px] font-medium rounded-md transition-colors ${isLogin ? 'bg-[#1A1A1A] text-white' : 'text-on-surface-variant hover:bg-surface-container-highest'}`}
+            >
+              Log in
+            </button>
+            <button 
+              onClick={() => setIsLogin(false)}
+              className={`flex-1 py-2 text-center text-[14px] font-medium rounded-md transition-colors ${!isLogin ? 'bg-[#1A1A1A] text-white' : 'text-on-surface-variant hover:bg-surface-container-highest'}`}
+            >
+              Sign up
+            </button>
           </div>
-        ) : (
-          <div className="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_1px_3px_0_rgba(0,0,0,0.05),_0_1px_2px_0_rgba(0,0,0,0.03)] p-8">
-            <div className="flex items-center justify-center mb-8 gap-2">
-              <span
-                className="material-symbols-outlined text-primary"
-                style={{ fontVariationSettings: "'FILL' 1", fontSize: "28px" }}
-              >
-                group_add
-              </span>
-              <span className="font-h2 text-h2 text-on-surface">TaskFlow</span>
+
+          <div className="p-8">
+            <div className="flex items-center justify-center mb-6 gap-2">
+              <span className="material-symbols-outlined text-primary text-[28px]" style={{ fontVariationSettings: "'FILL' 1" }}>task_alt</span>
+              <span className="font-medium text-[22px] text-on-surface">TaskFlow</span>
             </div>
             
-            <div className="text-center mb-8">
-              <h1 className="font-h1 text-h1 text-on-surface mb-2">Create an account</h1>
-              <p className="font-body-base text-body-base text-on-surface-variant">
-                Start managing your team's tasks today.
+            <div className="text-center mb-6">
+              <h1 className="font-medium text-[18px] text-on-surface mb-1">
+                {isLogin ? "Welcome back" : "Create an account"}
+              </h1>
+              <p className="text-[13px] text-on-surface-variant">
+                {isLogin ? "Enter your credentials to access your workspace." : "Start managing your team's tasks today."}
               </p>
             </div>
             
-            <form className="space-y-5" onSubmit={handleSignupSubmit}>
-              <div className="space-y-1.5">
-                <label className="block font-label-caps text-label-caps text-on-surface-variant" htmlFor="signup-name">
-                  Full Name
-                </label>
-                <input
-                  className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface font-body-base text-body-base placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow"
-                  id="signup-name"
-                  type="text"
-                  placeholder="Priya Sharma"
-                  value={signupName}
-                  onChange={(e) => setSignupName(e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-1.5 relative">
-                <label className={`block font-label-caps text-label-caps ${signupError && !signupEmail.includes("@") ? "text-error" : "text-on-surface-variant"}`} htmlFor="signup-email">
-                  Email Address
-                </label>
-                <div className="relative">
+            {isLogin ? (
+              <form className="space-y-4" onSubmit={handleLoginSubmit}>
+                <div className="space-y-1.5">
+                  <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="login-email">
+                    Email Address
+                  </label>
                   <input
-                    className={`w-full px-3 py-2 bg-surface-container-lowest border rounded text-on-surface font-body-base text-body-base focus:outline-none transition-shadow ${
-                      signupError && !signupEmail.includes("@") 
-                        ? "pr-10 bg-error-container/10 border-error focus:border-error focus:ring-1 focus:ring-error" 
-                        : "border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-outline"
-                    }`}
+                    className={`w-full px-3 h-[36px] bg-surface-container-lowest border rounded-[8px] text-on-surface text-[15px] placeholder:text-outline-variant focus:outline-none focus:border-primary transition-colors ${loginErrors.email ? 'border-error' : 'border-outline-variant'}`}
+                    id="login-email"
+                    placeholder="name@company.com"
+                    type="email"
+                    value={loginEmail}
+                    onChange={(e) => {
+                      setLoginEmail(e.target.value);
+                      if (loginErrors.email) setLoginErrors({...loginErrors, email: undefined});
+                    }}
+                  />
+                  {loginErrors.email && (
+                    <p className="text-[12px] text-error flex items-center gap-1 mt-1">
+                      <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {loginErrors.email}
+                    </p>
+                  )}
+                </div>
+                
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="login-password">
+                      Password
+                    </label>
+                  </div>
+                  <input
+                    className={`w-full px-3 h-[36px] bg-surface-container-lowest border rounded-[8px] text-on-surface text-[15px] placeholder:text-outline-variant focus:outline-none focus:border-primary transition-colors ${loginErrors.password ? 'border-error' : 'border-outline-variant'}`}
+                    id="login-password"
+                    placeholder="••••••••"
+                    type="password"
+                    value={loginPassword}
+                    onChange={(e) => {
+                      setLoginPassword(e.target.value);
+                      if (loginErrors.password) setLoginErrors({...loginErrors, password: undefined});
+                    }}
+                  />
+                  {loginErrors.password && (
+                    <p className="text-[12px] text-error flex items-center gap-1 mt-1">
+                      <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {loginErrors.password}
+                    </p>
+                  )}
+                </div>
+
+                {loginError && (
+                  <p className="text-[12px] text-error flex items-center gap-1 mt-1">
+                    <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {loginError}
+                  </p>
+                )}
+                
+                <button type="submit" className="w-full mt-2 h-[36px] bg-[#1A1A1A] text-white font-medium text-[14px] rounded-[8px] flex items-center justify-center gap-2 hover:bg-[#333] transition-colors">
+                  Enter workspace
+                </button>
+                <div className="text-center mt-2">
+                  <span className="text-[12px] text-on-surface-variant">Secure JWT session · Role-based access</span>
+                </div>
+              </form>
+            ) : (
+              <form className="space-y-4" onSubmit={handleSignupSubmit}>
+                <div className="space-y-1.5">
+                  <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="signup-name">
+                    Full Name
+                  </label>
+                  <input
+                    className={`w-full px-3 h-[36px] bg-surface-container-lowest border rounded-[8px] text-on-surface text-[15px] placeholder:text-outline-variant focus:outline-none focus:border-primary transition-colors ${signupErrors.name ? 'border-error' : 'border-outline-variant'}`}
+                    id="signup-name"
+                    type="text"
+                    placeholder="Priya Sharma"
+                    value={signupName}
+                    onChange={(e) => {
+                      setSignupName(e.target.value);
+                      if (signupErrors.name) setSignupErrors({...signupErrors, name: undefined});
+                    }}
+                  />
+                  {signupErrors.name && (
+                    <p className="text-[12px] text-error flex items-center gap-1 mt-1">
+                      <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {signupErrors.name}
+                    </p>
+                  )}
+                </div>
+                
+                <div className="space-y-1.5">
+                  <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="signup-email">
+                    Email Address
+                  </label>
+                  <input
+                    className={`w-full px-3 h-[36px] bg-surface-container-lowest border rounded-[8px] text-on-surface text-[15px] placeholder:text-outline-variant focus:outline-none focus:border-primary transition-colors ${signupErrors.email ? 'border-error' : 'border-outline-variant'}`}
                     id="signup-email"
                     type="email"
                     placeholder="priya.sharma@company.com"
                     value={signupEmail}
-                    onChange={(e) => setSignupEmail(e.target.value)}
+                    onChange={(e) => {
+                      setSignupEmail(e.target.value);
+                      if (signupErrors.email) setSignupErrors({...signupErrors, email: undefined});
+                    }}
                   />
-                  {signupError && !signupEmail.includes("@") && (
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                      <span className="material-symbols-outlined text-error" style={{ fontVariationSettings: "'FILL' 1", fontSize: "18px" }}>
-                        error
-                      </span>
-                    </div>
+                  {signupErrors.email && (
+                    <p className="text-[12px] text-error flex items-center gap-1 mt-1">
+                      <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {signupErrors.email}
+                    </p>
                   )}
                 </div>
-              </div>
-              
-              <div className="space-y-1.5">
-                <label className="block font-label-caps text-label-caps text-on-surface-variant" htmlFor="signup-password">
-                  Password
-                </label>
-                <input
-                  className="w-full px-3 py-2 bg-surface-container-lowest border border-outline-variant rounded text-on-surface font-body-base text-body-base placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow"
-                  id="signup-password"
-                  placeholder="Create a strong password"
-                  type="password"
-                  value={signupPassword}
-                  onChange={(e) => setSignupPassword(e.target.value)}
-                />
-                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1 text-xs">
-                  Must be at least 8 characters long.
-                </p>
-              </div>
+                
+                <div className="space-y-1.5">
+                  <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="signup-password">
+                    Password
+                  </label>
+                  <input
+                    className={`w-full px-3 h-[36px] bg-surface-container-lowest border rounded-[8px] text-on-surface text-[15px] placeholder:text-outline-variant focus:outline-none focus:border-primary transition-colors ${signupErrors.password ? 'border-error' : 'border-outline-variant'}`}
+                    id="signup-password"
+                    placeholder="Create a strong password"
+                    type="password"
+                    value={signupPassword}
+                    onChange={(e) => {
+                      setSignupPassword(e.target.value);
+                      if (signupErrors.password) setSignupErrors({...signupErrors, password: undefined});
+                    }}
+                  />
+                  {signupErrors.password && (
+                    <p className="text-[12px] text-error flex items-center gap-1 mt-1">
+                      <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {signupErrors.password}
+                    </p>
+                  )}
+                </div>
 
-              {signupError && (
-                <p className="font-body-sm text-body-sm text-error flex items-center gap-1 mt-1">
-                  <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>error</span>
-                  {signupError}
-                </p>
-              )}
-              
-              <button type="submit" className="w-full mt-4 py-2.5 bg-primary text-on-primary font-label-caps text-label-caps rounded flex items-center justify-center gap-2 hover:bg-surface-tint active:scale-[0.98] transition-all">
+                <div className="space-y-1.5">
+                  <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="signup-role">
+                    Role
+                  </label>
+                  <select
+                    id="signup-role"
+                    className="w-full px-3 h-[36px] bg-surface-container-lowest border border-outline-variant rounded-[8px] text-on-surface text-[15px] focus:outline-none focus:border-primary transition-colors"
+                    value={signupRole}
+                    onChange={(e) => setSignupRole(e.target.value)}
+                  >
+                    <option value="Admin">Admin</option>
+                    <option value="Member">Member</option>
+                  </select>
+                </div>
+
+                {signupError && (
+                  <p className="text-[12px] text-error flex items-center gap-1 mt-1">
+                    <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {signupError}
+                  </p>
+                )}
+                
+                <button type="submit" className="w-full mt-4 h-[36px] bg-[#1A1A1A] text-white font-medium text-[14px] rounded-[8px] flex items-center justify-center gap-2 hover:bg-[#333] transition-colors">
                   Create Account
-              </button>
-            </form>
-            
-            <div className="mt-8 text-center">
-              <p className="font-body-sm text-body-sm text-on-surface-variant">
-                Already have an account?{" "}
-                <button
-                  type="button"
-                  onClick={() => setIsLogin(true)}
-                  className="text-primary font-h3 text-body-sm hover:underline hover:text-surface-tint transition-colors"
-                >
-                  Log in
                 </button>
-              </p>
-            </div>
+                <div className="text-center mt-2">
+                  <span className="text-[12px] text-on-surface-variant">Secure JWT session · Role-based access</span>
+                </div>
+              </form>
+            )}
+
           </div>
-        )}
+        </div>
+
+        {/* Feature Badges */}
+        <div className="flex flex-wrap justify-center gap-2 mt-6">
+          <span className="px-3 py-1 text-[12px] text-on-surface-variant border border-outline-variant rounded-[20px] bg-transparent">JWT Sessions</span>
+          <span className="px-3 py-1 text-[12px] text-on-surface-variant border border-outline-variant rounded-[20px] bg-transparent">Postgres DB</span>
+          <span className="px-3 py-1 text-[12px] text-on-surface-variant border border-outline-variant rounded-[20px] bg-transparent">Role-based Access</span>
+        </div>
 
       </div>
     </div>

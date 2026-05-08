@@ -113,73 +113,63 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* Summary Cards (Bento style) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {/* Total Tasks */}
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex flex-col shadow-[0_1px_3px_0_rgba(0,0,0,0.05),0_1px_2px_0_rgba(0,0,0,0.03)] hover:border-primary/30 transition-colors">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-body-sm text-body-sm text-on-surface-variant font-medium">
-              Total Tasks
-            </h3>
-            <span className="material-symbols-outlined text-on-surface-variant text-[20px]">
-              inventory_2
-            </span>
-          </div>
-          <div className="text-3xl font-bold text-on-surface mb-2">{totalTasks}</div>
-          <div className="flex items-center text-xs text-on-surface-variant">
-            <span className="material-symbols-outlined text-[14px] text-primary mr-1">
-              trending_up
-            </span>
-            <span>+12% from last week</span>
+        <div className="bg-white border border-[#0000001f] rounded-[12px] p-4 flex flex-col">
+          <h3 className="text-[13px] text-[#9A9A9A] font-medium uppercase tracking-wider mb-2">
+            Total Tasks
+          </h3>
+          <div className="text-[24px] font-medium text-[#1A1A1A] mt-auto">
+            {totalTasks}
           </div>
         </div>
-        {/* Completed */}
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex flex-col shadow-[0_1px_3px_0_rgba(0,0,0,0.05),0_1px_2px_0_rgba(0,0,0,0.03)] hover:border-primary/30 transition-colors">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-body-sm text-body-sm text-on-surface-variant font-medium">
-              Completed
-            </h3>
-            <span className="material-symbols-outlined text-on-surface-variant text-[20px]">
-              check_circle
-            </span>
-          </div>
-          <div className="text-3xl font-bold text-on-surface mb-2">{completedTasks}</div>
-          <div className="flex items-center text-xs text-on-surface-variant">
-            <span className="material-symbols-outlined text-[14px] text-primary mr-1">
-              trending_up
-            </span>
-            <span>+5% from last week</span>
-          </div>
-        </div>
+
         {/* In Progress */}
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex flex-col shadow-[0_1px_3px_0_rgba(0,0,0,0.05),0_1px_2px_0_rgba(0,0,0,0.03)] hover:border-primary/30 transition-colors relative overflow-hidden">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-body-sm text-body-sm text-on-surface-variant font-medium">
-              In Progress
-            </h3>
-            <span className="material-symbols-outlined text-on-surface-variant text-[20px]">
-              pending
-            </span>
-          </div>
-          <div className="text-3xl font-bold text-on-surface mb-2">{inProgressTasks}</div>
-          <div className="flex items-center text-xs text-on-surface-variant">
-            <span className="text-on-surface-variant">Active focus</span>
+        <div className="bg-[#FAEEDA] border border-[#0000001f] rounded-[12px] p-4 flex flex-col">
+          <h3 className="text-[13px] text-[#9A9A9A] font-medium uppercase tracking-wider mb-2">
+            In Progress
+          </h3>
+          <div className="text-[24px] font-medium text-[#BA7517] mt-auto">
+            {inProgressTasks}
           </div>
         </div>
-        {/* Overdue */}
-        <div className="bg-surface-container-lowest border border-error-container rounded-lg p-6 flex flex-col shadow-[0_1px_3px_0_rgba(0,0,0,0.05),0_1px_2px_0_rgba(0,0,0,0.03)] hover:border-error/30 transition-colors">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-body-sm text-body-sm text-error font-medium">Overdue</h3>
-            <span className="material-symbols-outlined text-error text-[20px]">
-              warning
-            </span>
+
+        {/* Done */}
+        <div className="bg-[#EAF3DE] border border-[#0000001f] rounded-[12px] p-4 flex flex-col">
+          <h3 className="text-[13px] text-[#9A9A9A] font-medium uppercase tracking-wider mb-2">
+            Done
+          </h3>
+          <div className="text-[24px] font-medium text-[#3B6D11] mt-auto">
+            {completedTasks}
           </div>
-          <div className="text-3xl font-bold text-error mb-2">{overdueTasks}</div>
-          <div className="flex items-center text-xs text-error">
-            <span className="material-symbols-outlined text-[14px] mr-1">
-              trending_down
-            </span>
-            <span>Requires attention</span>
+        </div>
+
+        {/* Overdue */}
+        <div className="bg-[#FCEBEB] border border-[#0000001f] rounded-[12px] p-4 flex flex-col">
+          <h3 className="text-[13px] text-[#9A9A9A] font-medium uppercase tracking-wider mb-2 flex items-center gap-1">
+            Overdue
+            <i className="ti-alert-triangle text-[#E24B4A] text-[14px]"></i>
+          </h3>
+          <div className="text-[24px] font-medium text-[#E24B4A] mt-auto">
+            {overdueTasks}
+          </div>
+        </div>
+
+        {/* Tasks Per User */}
+        <div className="bg-white border border-[#0000001f] rounded-[12px] p-4 flex flex-col">
+          <h3 className="text-[13px] text-[#9A9A9A] font-medium uppercase tracking-wider mb-2">
+            Tasks Per User
+          </h3>
+          <div className="mt-auto flex flex-col gap-1.5">
+            <div className="flex items-center justify-between text-[12px]">
+              <span className="text-[#1A1A1A] font-medium">Rahul D.</span>
+              <span className="bg-[#EFEDE8] text-[#6B6B6B] px-2 py-0.5 rounded-full">12</span>
+            </div>
+            <div className="flex items-center justify-between text-[12px]">
+              <span className="text-[#1A1A1A] font-medium">Anjali G.</span>
+              <span className="bg-[#EFEDE8] text-[#6B6B6B] px-2 py-0.5 rounded-full">8</span>
+            </div>
           </div>
         </div>
       </div>
