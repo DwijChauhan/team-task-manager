@@ -134,10 +134,10 @@ export default function ProjectKanbanPage() {
     (t) => (t.dueDate === "Today" || t.dueDate.includes("Overdue")) && t.status !== "done"
   );
   const statusDotColor = hasOverdueNotDone
-    ? "#E24B4A"
+    ? "var(--color-red-text)"
     : isAllDone
-    ? "#3B6D11"
-    : "#BA7517";
+    ? "var(--color-green-text)"
+    : "var(--color-amber-text)";
 
   if (!mounted) {
     return <div className="flex-1 overflow-x-hidden flex bg-background min-h-[calc(100vh-64px)] items-center justify-center">Loading board...</div>;
@@ -152,7 +152,7 @@ export default function ProjectKanbanPage() {
           <div className="max-w-5xl mx-auto">
             <div className="flex items-start justify-between mb-4">
               <div>
-                <div className="text-[11px] uppercase tracking-[0.08em] text-[#9A9A9A] mb-1 font-medium">ADMIN WORKSPACE</div>
+                <div className="text-[11px] uppercase tracking-[0.08em] text-on-surface-variant mb-1 font-medium">ADMIN WORKSPACE</div>
                 <div className="flex items-center gap-2 mb-2 text-outline text-body-sm">
                   <span className="material-symbols-outlined text-[16px]">folder</span>
                   <span>Projects / Q3 Festive Season</span>

@@ -1,26 +1,30 @@
 @import "tailwindcss";
 
 @theme {
-  /* New Minimal Palette */
-  --color-bg-page: #F5F3EE;
-  --color-bg-card: #FFFFFF;
-  --color-bg-surface: #EFEDE8;
-  --color-border: rgba(0,0,0,0.12);
-  --color-border-strong: rgba(0,0,0,0.25);
-  --color-text-primary: #1A1A1A;
-  --color-text-secondary: #6B6B6B;
-  --color-text-muted: #9A9A9A;
-  --color-red-bg: #FCEBEB;
-  --color-red-text: #E24B4A;
-  --color-red-border: #F7C1C1;
-  --color-amber-bg: #FAEEDA;
-  --color-amber-text: #BA7517;
-  --color-amber-border: #FAC775;
-  --color-green-bg: #EAF3DE;
-  --color-green-text: #3B6D11;
-  --color-green-border: #C0DD97;
+  /* Sahara Dark Palette */
+  --color-bg-page: #181412;
+  --color-bg-card: #25211E;
+  --color-bg-surface: #201C1A;
+  --color-border: #3E3733;
+  --color-border-strong: #5A514B;
+  --color-text-primary: #F5EBE6;
+  --color-text-secondary: #A39893;
+  --color-text-muted: #7A706B;
+  --color-terracotta: #D97746;
+  --color-terracotta-dark: #C66B3D;
+  --color-terracotta-light: #F0A07B;
+  --color-terracotta-subtle: #382A24;
+  --color-red-bg: #3D1A1A;
+  --color-red-text: #F27B7B;
+  --color-red-border: #7A3333;
+  --color-amber-bg: #402A14;
+  --color-amber-text: #E59F54;
+  --color-amber-border: #805428;
+  --color-green-bg: #1B331A;
+  --color-green-text: #82D97A;
+  --color-green-border: #366633;
 
-  /* Remapped Old Colors */
+  /* Remapped Colors */
   --color-background: var(--color-bg-page);
   --color-on-background: var(--color-text-primary);
   --color-surface-container-lowest: var(--color-bg-card);
@@ -33,41 +37,51 @@
   --color-on-surface-variant: var(--color-text-muted);
   --color-outline-variant: var(--color-border);
   --color-outline: var(--color-border-strong);
-  --color-primary: var(--color-text-primary);
-  --color-on-primary: var(--color-bg-card);
+  --color-primary: var(--color-terracotta);
+  --color-on-primary: #FFFFFF;
   --color-error: var(--color-red-text);
   --color-error-container: var(--color-red-bg);
   --color-on-error-container: var(--color-red-text);
-  --color-primary-container: var(--color-text-primary);
-  --color-on-primary-container: var(--color-bg-card);
+  --color-primary-container: var(--color-terracotta-subtle);
+  --color-on-primary-container: var(--color-terracotta);
   --color-surface-variant: var(--color-bg-surface);
   --color-surface-bright: var(--color-bg-card);
-  --color-primary-fixed-dim: var(--color-text-muted);
+  --color-primary-fixed-dim: var(--color-terracotta-dark);
   --color-tertiary-container: var(--color-amber-bg);
   --color-on-tertiary-container: var(--color-amber-text);
   --color-surface-tint: var(--color-text-secondary);
 
-  --radius-DEFAULT: 0.25rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
+  --radius-DEFAULT: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
   --radius-full: 9999px;
 
-  --spacing-container-padding: 24px;
+  --spacing-container-padding: 32px;
   --spacing-sidebar-collapsed: 64px;
   --spacing-unit: 4px;
-  --spacing-sidebar-width: 240px;
-  --spacing-gutter: 16px;
+  --spacing-sidebar-width: 260px;
+  --spacing-gutter: 24px;
 
   --font-body-base: var(--font-inter), sans-serif;
-  --font-h2: var(--font-inter), sans-serif;
-  --font-h1: var(--font-inter), sans-serif;
-  --font-h3: var(--font-inter), sans-serif;
+  --font-h2: var(--font-serif), serif;
+  --font-h1: var(--font-serif), serif;
+  --font-h3: var(--font-serif), serif;
   --font-body-sm: var(--font-inter), sans-serif;
   --font-label-caps: var(--font-inter), sans-serif;
   --font-code: monospace;
 }
 
 @layer base {
+  .theme-auth {
+    --color-bg-page: #FDF8F5;
+    --color-bg-card: #FFFFFF;
+    --color-bg-surface: #FDF8F5;
+    --color-border: #E5DCD6;
+    --color-border-strong: #CFC3BB;
+    --color-text-primary: #1A1513;
+    --color-text-secondary: #6B625E;
+    --color-text-muted: #9A908A;
+  }
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   }

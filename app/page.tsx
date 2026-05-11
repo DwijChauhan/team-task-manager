@@ -11,7 +11,6 @@ export default function Page() {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginErrors, setLoginErrors] = useState<{email?: string, password?: string}>({});
-  const [loginError, setLoginError] = useState("");
 
   // Signup State
   const [signupName, setSignupName] = useState("");
@@ -19,30 +18,20 @@ export default function Page() {
   const [signupPassword, setSignupPassword] = useState("");
   const [signupRole, setSignupRole] = useState("Member");
   const [signupErrors, setSignupErrors] = useState<{name?: string, email?: string, password?: string}>({});
-  const [signupError, setSignupError] = useState("");
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoginError("");
     const errors: any = {};
-    
     if (!loginEmail) errors.email = "Email is required";
     if (!loginPassword) errors.password = "Password is required";
-    
     setLoginErrors(errors);
-
     if (Object.keys(errors).length > 0) return;
-    
-    // Simulate successful login
-    // In a real app: await signIn('credentials', { email, password });
     router.push("/dashboard");
   };
 
   const handleSignupSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSignupError("");
     const errors: any = {};
-
     if (!signupName) errors.name = "Full name is required";
     if (!signupEmail) {
       errors.email = "Email is required";
@@ -54,63 +43,68 @@ export default function Page() {
     } else if (signupPassword.length < 8) {
       errors.password = "Password must be at least 8 characters long";
     }
-
     setSignupErrors(errors);
-
     if (Object.keys(errors).length > 0) return;
-
-    // Simulate successful signup and saving role to Postgres
-    // In a real app: await fetch('/api/signup', { method: 'POST', body: JSON.stringify({ name, email, password, role }) });
     router.push("/dashboard");
   };
 
   return (
-    <div className="w-full flex items-center justify-center min-h-screen p-container-padding selection:bg-primary selection:text-on-primary bg-background">
-      <div className="w-full max-w-md">
+    <div className="theme-auth min-h-screen flex flex-col md:flex-row bg-white font-body-base text-text-primary selection:bg-primary selection:text-white">
+      {/* Left Side: Marketing / Hero */}
+      <div 
+        className="hidden md:flex md:w-1/2 p-12 flex-col justify-between rounded-r-3xl my-4 ml-4"
+        style={{ background: 'linear-gradient(135deg, #FDF8F5 0%, #EBD4C9 100%)' }}
+      >
+        <div className="flex items-center gap-2">
+          <span className="material-symbols-outlined text-[#C66B3D] text-[28px]" style={{ fontVariationSettings: "'FILL' 1" }}>landscape</span>
+          <span className="font-h1 text-[24px] font-bold text-[#C66B3D]">Sahara</span>
+        </div>
         
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-[12px] shadow-sm overflow-hidden">
-          
-          {/* Tab Switcher */}
-          <div className="flex border-b border-outline-variant p-2 gap-2 bg-surface">
-            <button 
-              onClick={() => setIsLogin(true)}
-              className={`flex-1 py-2 text-center text-[14px] font-medium rounded-md transition-colors ${isLogin ? 'bg-[#1A1A1A] text-white' : 'text-on-surface-variant hover:bg-surface-container-highest'}`}
-            >
-              Log in
-            </button>
-            <button 
-              onClick={() => setIsLogin(false)}
-              className={`flex-1 py-2 text-center text-[14px] font-medium rounded-md transition-colors ${!isLogin ? 'bg-[#1A1A1A] text-white' : 'text-on-surface-variant hover:bg-surface-container-highest'}`}
-            >
-              Sign up
-            </button>
-          </div>
+        <div className="max-w-md">
+          <h1 className="font-h1 text-[48px] md:text-[64px] font-bold text-[#1A1513] mb-6 leading-[1.1]">
+            Sun-Baked<br/>Simplicity.
+          </h1>
+          <p className="text-[18px] text-[#6B625E] leading-relaxed">
+            Experience a new era of team management. Luxurious warmth meets disciplined minimalism in every interaction.
+          </p>
+        </div>
 
-          <div className="p-8">
-            <div className="flex items-center justify-center mb-6 gap-2">
-              <span className="material-symbols-outlined text-primary text-[28px]" style={{ fontVariationSettings: "'FILL' 1" }}>task_alt</span>
-              <span className="font-medium text-[22px] text-on-surface">TaskFlow</span>
+        <div className="flex items-center gap-4">
+          <div className="flex -space-x-3">
+            <img alt="User 1" className="w-10 h-10 rounded-full border-2 border-[#EBD4C9] object-cover" src="https://ui-avatars.com/api/?name=V+S&background=181412&color=fff" />
+            <img alt="User 2" className="w-10 h-10 rounded-full border-2 border-[#EBD4C9] object-cover" src="https://ui-avatars.com/api/?name=A+G&background=3E3733&color=fff" />
+            <div className="w-10 h-10 rounded-full border-2 border-[#EBD4C9] bg-[#D97746] flex items-center justify-center text-[12px] font-medium text-white">
+              +12
             </div>
+          </div>
+          <span className="text-[14px] text-[#6B625E] font-medium">Join premium teams worldwide</span>
+        </div>
+      </div>
+
+      {/* Right Side: Auth Form */}
+      <div className="w-full md:w-1/2 flex items-center justify-center p-8 bg-white">
+        <div className="w-full max-w-md">
+          <div className="mb-10">
+            <h2 className="font-h1 text-[36px] font-bold text-[#1A1513] mb-2">
+              {isLogin ? "Welcome back" : "Create account"}
+            </h2>
+            <p className="text-[15px] text-[#6B625E]">
+              {isLogin ? "Sign in to manage your team." : "Start managing your team's tasks today."}
+            </p>
+          </div>
             
-            <div className="text-center mb-6">
-              <h1 className="font-medium text-[18px] text-on-surface mb-1">
-                {isLogin ? "Welcome back" : "Create an account"}
-              </h1>
-              <p className="text-[13px] text-on-surface-variant">
-                {isLogin ? "Enter your credentials to access your workspace." : "Start managing your team's tasks today."}
-              </p>
-            </div>
-            
-            {isLogin ? (
-              <form className="space-y-4" onSubmit={handleLoginSubmit}>
-                <div className="space-y-1.5">
-                  <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="login-email">
-                    Email Address
-                  </label>
+          {isLogin ? (
+            <form className="space-y-5" onSubmit={handleLoginSubmit}>
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-[#1A1513]" htmlFor="login-email">
+                  Work Email
+                </label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9A908A] text-[20px]">mail</span>
                   <input
-                    className={`w-full px-3 h-[36px] bg-surface-container-lowest border rounded-[8px] text-on-surface text-[15px] placeholder:text-outline-variant focus:outline-none focus:border-primary transition-colors ${loginErrors.email ? 'border-error' : 'border-outline-variant'}`}
+                    className={`w-full pl-10 pr-3 h-[44px] bg-[#F9F6F4] border rounded-[8px] text-[#1A1513] text-[15px] placeholder:text-[#9A908A] focus:outline-none focus:border-[#C66B3D] focus:bg-white transition-colors ${loginErrors.email ? 'border-error' : 'border-[#E5DCD6]'}`}
                     id="login-email"
-                    placeholder="name@company.com"
+                    placeholder="jane@company.com"
                     type="email"
                     value={loginEmail}
                     onChange={(e) => {
@@ -118,21 +112,22 @@ export default function Page() {
                       if (loginErrors.email) setLoginErrors({...loginErrors, email: undefined});
                     }}
                   />
-                  {loginErrors.email && (
-                    <p className="text-[12px] text-error flex items-center gap-1 mt-1">
-                      <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {loginErrors.email}
-                    </p>
-                  )}
                 </div>
-                
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="login-password">
-                      Password
-                    </label>
-                  </div>
+                {loginErrors.email && (
+                  <p className="text-[12px] text-error flex items-center gap-1 mt-1">
+                    <span className="material-symbols-outlined text-[14px]">error</span> {loginErrors.email}
+                  </p>
+                )}
+              </div>
+              
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-[#1A1513]" htmlFor="login-password">
+                  Password
+                </label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9A908A] text-[20px]">lock</span>
                   <input
-                    className={`w-full px-3 h-[36px] bg-surface-container-lowest border rounded-[8px] text-on-surface text-[15px] placeholder:text-outline-variant focus:outline-none focus:border-primary transition-colors ${loginErrors.password ? 'border-error' : 'border-outline-variant'}`}
+                    className={`w-full pl-10 pr-3 h-[44px] bg-[#F9F6F4] border rounded-[8px] text-[#1A1513] text-[15px] placeholder:text-[#9A908A] focus:outline-none focus:border-[#C66B3D] focus:bg-white transition-colors ${loginErrors.password ? 'border-error' : 'border-[#E5DCD6]'}`}
                     id="login-password"
                     placeholder="••••••••"
                     type="password"
@@ -142,80 +137,73 @@ export default function Page() {
                       if (loginErrors.password) setLoginErrors({...loginErrors, password: undefined});
                     }}
                   />
-                  {loginErrors.password && (
-                    <p className="text-[12px] text-error flex items-center gap-1 mt-1">
-                      <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {loginErrors.password}
-                    </p>
-                  )}
                 </div>
-
-                {loginError && (
+                {loginErrors.password && (
                   <p className="text-[12px] text-error flex items-center gap-1 mt-1">
-                    <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {loginError}
+                    <span className="material-symbols-outlined text-[14px]">error</span> {loginErrors.password}
                   </p>
                 )}
-                
-                <button type="submit" className="w-full mt-2 h-[36px] bg-[#1A1A1A] text-white font-medium text-[14px] rounded-[8px] flex items-center justify-center gap-2 hover:bg-[#333] transition-colors">
-                  Enter workspace
-                </button>
-                <div className="text-center mt-2">
-                  <span className="text-[12px] text-on-surface-variant">Secure JWT session · Role-based access</span>
-                </div>
-              </form>
-            ) : (
-              <form className="space-y-4" onSubmit={handleSignupSubmit}>
-                <div className="space-y-1.5">
-                  <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="signup-name">
-                    Full Name
-                  </label>
+              </div>
+              
+              <button type="submit" className="w-full mt-6 h-[44px] bg-[#C66B3D] text-white font-medium text-[15px] rounded-[8px] flex items-center justify-center gap-2 hover:bg-[#B35F35] transition-colors shadow-sm">
+                Sign In
+              </button>
+
+              <div className="text-center mt-6">
+                <p className="text-[14px] text-[#6B625E]">
+                  Don't have an account? <button type="button" onClick={() => setIsLogin(false)} className="text-[#C66B3D] font-medium hover:underline">Create one</button>
+                </p>
+              </div>
+            </form>
+          ) : (
+            <form className="space-y-5" onSubmit={handleSignupSubmit}>
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-[#1A1513]" htmlFor="signup-name">
+                  Full Name
+                </label>
+                <input
+                  className={`w-full px-3 h-[44px] bg-[#F9F6F4] border rounded-[8px] text-[#1A1513] text-[15px] placeholder:text-[#9A908A] focus:outline-none focus:border-[#C66B3D] focus:bg-white transition-colors ${signupErrors.name ? 'border-error' : 'border-[#E5DCD6]'}`}
+                  id="signup-name"
+                  type="text"
+                  placeholder="Jane Doe"
+                  value={signupName}
+                  onChange={(e) => {
+                    setSignupName(e.target.value);
+                    if (signupErrors.name) setSignupErrors({...signupErrors, name: undefined});
+                  }}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-[#1A1513]" htmlFor="signup-email">
+                  Work Email
+                </label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9A908A] text-[20px]">mail</span>
                   <input
-                    className={`w-full px-3 h-[36px] bg-surface-container-lowest border rounded-[8px] text-on-surface text-[15px] placeholder:text-outline-variant focus:outline-none focus:border-primary transition-colors ${signupErrors.name ? 'border-error' : 'border-outline-variant'}`}
-                    id="signup-name"
-                    type="text"
-                    placeholder="Priya Sharma"
-                    value={signupName}
-                    onChange={(e) => {
-                      setSignupName(e.target.value);
-                      if (signupErrors.name) setSignupErrors({...signupErrors, name: undefined});
-                    }}
-                  />
-                  {signupErrors.name && (
-                    <p className="text-[12px] text-error flex items-center gap-1 mt-1">
-                      <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {signupErrors.name}
-                    </p>
-                  )}
-                </div>
-                
-                <div className="space-y-1.5">
-                  <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="signup-email">
-                    Email Address
-                  </label>
-                  <input
-                    className={`w-full px-3 h-[36px] bg-surface-container-lowest border rounded-[8px] text-on-surface text-[15px] placeholder:text-outline-variant focus:outline-none focus:border-primary transition-colors ${signupErrors.email ? 'border-error' : 'border-outline-variant'}`}
+                    className={`w-full pl-10 pr-3 h-[44px] bg-[#F9F6F4] border rounded-[8px] text-[#1A1513] text-[15px] placeholder:text-[#9A908A] focus:outline-none focus:border-[#C66B3D] focus:bg-white transition-colors ${signupErrors.email ? 'border-error' : 'border-[#E5DCD6]'}`}
                     id="signup-email"
                     type="email"
-                    placeholder="priya.sharma@company.com"
+                    placeholder="jane@company.com"
                     value={signupEmail}
                     onChange={(e) => {
                       setSignupEmail(e.target.value);
                       if (signupErrors.email) setSignupErrors({...signupErrors, email: undefined});
                     }}
                   />
-                  {signupErrors.email && (
-                    <p className="text-[12px] text-error flex items-center gap-1 mt-1">
-                      <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {signupErrors.email}
-                    </p>
-                  )}
                 </div>
-                
-                <div className="space-y-1.5">
-                  <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="signup-password">
-                    Password
-                  </label>
+              </div>
+              
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-[#1A1513]" htmlFor="signup-password">
+                  Password
+                </label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9A908A] text-[20px]">lock</span>
                   <input
-                    className={`w-full px-3 h-[36px] bg-surface-container-lowest border rounded-[8px] text-on-surface text-[15px] placeholder:text-outline-variant focus:outline-none focus:border-primary transition-colors ${signupErrors.password ? 'border-error' : 'border-outline-variant'}`}
+                    className={`w-full pl-10 pr-3 h-[44px] bg-[#F9F6F4] border rounded-[8px] text-[#1A1513] text-[15px] placeholder:text-[#9A908A] focus:outline-none focus:border-[#C66B3D] focus:bg-white transition-colors ${signupErrors.password ? 'border-error' : 'border-[#E5DCD6]'}`}
                     id="signup-password"
-                    placeholder="Create a strong password"
+                    placeholder="••••••••"
                     type="password"
                     value={signupPassword}
                     onChange={(e) => {
@@ -223,53 +211,40 @@ export default function Page() {
                       if (signupErrors.password) setSignupErrors({...signupErrors, password: undefined});
                     }}
                   />
-                  {signupErrors.password && (
-                    <p className="text-[12px] text-error flex items-center gap-1 mt-1">
-                      <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {signupErrors.password}
-                    </p>
-                  )}
                 </div>
+              </div>
 
-                <div className="space-y-1.5">
-                  <label className="block text-[11px] font-medium text-on-surface-variant uppercase tracking-wider" htmlFor="signup-role">
-                    Role
-                  </label>
-                  <select
-                    id="signup-role"
-                    className="w-full px-3 h-[36px] bg-surface-container-lowest border border-outline-variant rounded-[8px] text-on-surface text-[15px] focus:outline-none focus:border-primary transition-colors"
-                    value={signupRole}
-                    onChange={(e) => setSignupRole(e.target.value)}
-                  >
-                    <option value="Admin">Admin</option>
-                    <option value="Member">Member</option>
-                  </select>
-                </div>
+              <div className="space-y-2">
+                <label className="block text-[13px] font-medium text-[#1A1513]" htmlFor="signup-role">
+                  Role
+                </label>
+                <select
+                  id="signup-role"
+                  className="w-full px-3 h-[44px] bg-[#F9F6F4] border border-[#E5DCD6] rounded-[8px] text-[#1A1513] text-[15px] focus:outline-none focus:border-[#C66B3D] focus:bg-white transition-colors"
+                  value={signupRole}
+                  onChange={(e) => setSignupRole(e.target.value)}
+                >
+                  <option value="Admin">Admin</option>
+                  <option value="Member">Member</option>
+                </select>
+              </div>
+              
+              <button type="submit" className="w-full mt-6 h-[44px] bg-[#C66B3D] text-white font-medium text-[15px] rounded-[8px] flex items-center justify-center gap-2 hover:bg-[#B35F35] transition-colors shadow-sm">
+                Create Account
+              </button>
 
-                {signupError && (
-                  <p className="text-[12px] text-error flex items-center gap-1 mt-1">
-                    <i className="ti-alert-circle material-symbols-outlined text-[14px]">error</i> {signupError}
-                  </p>
-                )}
-                
-                <button type="submit" className="w-full mt-4 h-[36px] bg-[#1A1A1A] text-white font-medium text-[14px] rounded-[8px] flex items-center justify-center gap-2 hover:bg-[#333] transition-colors">
-                  Create Account
-                </button>
-                <div className="text-center mt-2">
-                  <span className="text-[12px] text-on-surface-variant">Secure JWT session · Role-based access</span>
-                </div>
-              </form>
-            )}
+              <div className="text-center mt-6">
+                <p className="text-[14px] text-[#6B625E]">
+                  Already have an account? <button type="button" onClick={() => setIsLogin(true)} className="text-[#C66B3D] font-medium hover:underline">Sign in</button>
+                </p>
+              </div>
+            </form>
+          )}
 
+          <div className="mt-12 text-center text-[12px] text-[#9A908A]">
+            By continuing, you agree to our <a href="#" className="underline">Terms of Service</a> and <br/><a href="#" className="underline">Privacy Policy</a>.
           </div>
         </div>
-
-        {/* Feature Badges */}
-        <div className="flex flex-wrap justify-center gap-2 mt-6">
-          <span className="px-3 py-1 text-[12px] text-on-surface-variant border border-outline-variant rounded-[20px] bg-transparent">JWT Sessions</span>
-          <span className="px-3 py-1 text-[12px] text-on-surface-variant border border-outline-variant rounded-[20px] bg-transparent">Postgres DB</span>
-          <span className="px-3 py-1 text-[12px] text-on-surface-variant border border-outline-variant rounded-[20px] bg-transparent">Role-based Access</span>
-        </div>
-
       </div>
     </div>
   );
