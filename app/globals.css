@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+@theme {
+  /* Dark Mode: Deep Slate & Indigo */
+  --color-bg-page: #0F172A; /* Deep Slate */
+  --color-bg-card: #1E293B;
+  --color-bg-surface: #152033;
+  --color-border: #334155;
+  --color-border-strong: #475569;
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+  
+  /* Indian Accents */
+  --color-saffron-orange: #FF9933;
+  --color-electric-teal: #008080;
+  --color-teal-light: #0D9488;
+  
+  /* Status/Priority Colors */
+  --color-red-bg: #451A1A;
+  --color-red-text: #F87171;
+  --color-red-border: #7F1D1D;
+  --color-amber-bg: #422006;
+  --color-amber-text: #FBBF24;
+  --color-amber-border: #78350F;
+  --color-green-bg: #064E3B;
+  --color-green-text: #34D399;
+  --color-green-border: #065F46;
+
+  /* Remapped Colors */
+  --color-background: var(--color-bg-page);
+  --color-on-background: var(--color-text-primary);
+  --color-surface-container-lowest: var(--color-bg-card);
+  --color-surface: var(--color-bg-surface);
+  --color-surface-container: var(--color-bg-surface);
+  --color-surface-container-low: var(--color-bg-surface);
+  --color-surface-container-high: var(--color-bg-surface);
+  --color-surface-container-highest: var(--color-bg-surface);
+  --color-on-surface: var(--color-text-primary);
+  --color-on-surface-variant: var(--color-text-secondary);
+  --color-outline-variant: var(--color-border);
+  --color-outline: var(--color-border-strong);
+  
+  /* Primary mapped to Electric Teal for dark mode focus */
+  --color-primary: var(--color-teal-light);
+  --color-on-primary: #FFFFFF;
+  --color-primary-container: #115E59;
+  --color-on-primary-container: #CCFBF1;
+  
+  --color-error: var(--color-red-text);
+  --color-error-container: var(--color-red-bg);
+  --color-on-error-container: var(--color-red-text);
+  
+  --color-surface-variant: var(--color-bg-surface);
+  --color-surface-bright: var(--color-bg-card);
+  --color-surface-tint: var(--color-text-muted);
+
+  --radius-DEFAULT: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+
+  --spacing-container-padding: 32px;
+  --spacing-sidebar-collapsed: 64px;
+  --spacing-unit: 4px;
+  --spacing-sidebar-width: 260px;
+  --spacing-gutter: 24px;
+
+  --font-body-base: var(--font-inter), sans-serif;
+  --font-h1: var(--font-inter), sans-serif;
+  --font-h2: var(--font-inter), sans-serif;
+  --font-h3: var(--font-inter), sans-serif;
+  --font-body-sm: var(--font-inter), sans-serif;
+  --font-label-caps: var(--font-inter), sans-serif;
+  --font-code: monospace;
+}
+
+@layer base {
+  .theme-light {
+    /* Light Mode: Pure White & Soft Cobalt */
+    --color-bg-page: #F8FAFC;
+    --color-bg-card: #FFFFFF;
+    --color-bg-surface: #F1F5F9;
+    --color-border: #E2E8F0;
+    --color-border-strong: #CBD5E1;
+    --color-text-primary: #0F172A;
+    --color-text-secondary: #475569;
+    --color-text-muted: #64748B;
+    
+    --color-primary: var(--color-electric-teal);
+    --color-primary-container: #CCFBF1;
+    --color-on-primary-container: #115E59;
+  }
+  
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* Global Rules */
+  * { font-weight: 400; }
+  h1, h2, h3, h4, h5, h6, strong, b { font-weight: 500; }
+  .font-medium, [class*="font-medium"] { font-weight: 500 !important; }
+
+  *, ::before, ::after {
+    transition-property: background-color, border-color, outline-color, box-shadow;
+    transition-duration: 0.15s;
+    transition-timing-function: ease;
+  }
+
+  button, [role="button"], a {
+    cursor: pointer;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+  }
+
+  *:hover::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+  }
+
+  body {
+    background-color: var(--color-bg-page);
+    color: var(--color-text-primary);
+  }
+}
+
+@layer utilities {
+  .focus-ring-teal {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-electric-teal)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-bg-page)];
+  }
+}
